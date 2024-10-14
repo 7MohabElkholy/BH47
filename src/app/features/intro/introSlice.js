@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const introSlice = createSlice({
   name: "intro",
   initialState: {
-    skiped: false,
+    skiped: true,
   },
   reducers: {
     skipIntro: (state) => {

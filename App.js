@@ -59,6 +59,7 @@ export default function App() {
     await Font.loadAsync({
       "Tajawal-Regular": require("./assets/fonts/Tajawal-Regular.ttf"),
       "Tajawal-Bold": require("./assets/fonts/Tajawal-Bold.ttf"),
+      "Tajawal-Medium": require("./assets/fonts/Tajawal-Medium.ttf"),
     });
     setFontsLoaded(true);
   };
