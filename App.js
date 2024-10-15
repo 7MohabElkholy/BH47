@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View } from "react-native";
-import { Provider, useSelector } from "react-redux";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import store from "./src/app/store";
@@ -9,17 +9,31 @@ import { Counter } from "./src/app/features/counter/Counter";
 import HomeScreen from "./src/app/screens/HomeScreen";
 import SettingsScreen from "./src/app/screens/SettingsScreen";
 import LoginScreen from "./src/app/screens/LoginScreen"; // Import LoginScreen
-import { selectUser } from "./src/app/userSlice"; // Import user selector
+import { selectUser, setUser } from "./src/app/userSlice"; // Import user selector
 import { Ionicons } from "@expo/vector-icons"; // Import icons
 import * as Font from "expo-font"; // Import Font loading utility from Expo
 import AppLoading from "expo-app-loading"; // Optional: App loading while font is fetched
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./src/app/firebase";
 
 const Tab = createBottomTabNavigator();
 
 function MainApp() {
   const user = useSelector(selectUser); // Get the global user state
+  const dispatch = useDispatch();
 
-  // If the user state is empty, show the LoginScreen
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log(user);
+
+        dispatch(setUser({ uid: user.uid, email: user.email }));
+      } else {
+        return <LoginScreen />;
+      }
+    });
+  }, []);
+
   if (!user) {
     return <LoginScreen />;
   }

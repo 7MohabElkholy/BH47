@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { decrement, increment } from "./counterSlice";
 import { Text, TouchableOpacity, View } from "react-native";
+import { selectUser } from "../../userSlice";
 
 export function Counter() {
   const count = useSelector((state) => state.counter.value);
+  const user = useSelector(selectUser); // Get the global user state
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log(user);
+  }, []);
 
   return (
     <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
