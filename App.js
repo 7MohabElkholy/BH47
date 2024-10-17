@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, View } from "react-native";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -15,25 +15,65 @@ import * as Font from "expo-font"; // Import Font loading utility from Expo
 import AppLoading from "expo-app-loading"; // Optional: App loading while font is fetched
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./src/app/firebase";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "./src/app/firebase";
 
 const Tab = createBottomTabNavigator();
 
 function MainApp() {
-  const user = useSelector(selectUser); // Get the global user state
+  const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log(user);
-
-        dispatch(setUser({ uid: user.uid, email: user.email }));
+        dispatch(
+          setUser({
+            uid: user.uid,
+            email: user.email,
+            emailVerified: user.emailVerified,
+            dispalyName: user.displayName,
+          })
+        );
       } else {
-        return <LoginScreen />;
+        dispatch(setUser(null)); // Reset user state on sign-out
       }
     });
-  }, []);
+    return () => unsubscribe(); // Clean up subscription
+  }, [dispatch]);
 
+  useEffect(() => {
+    fetchData();
+  }, [user]); // Run fetchData whenever user changes
+
+  async function fetchData() {
+    if (user) {
+      const docRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const userData = docSnap.data();
+
+        // Only update if registrationCode or role are different
+        if (
+          user.registrationCode !== userData.registrationCode ||
+          user.role !== userData.role
+        ) {
+          dispatch(
+            setUser({
+              ...user,
+              registrationCode: userData.registrationCode,
+              role: userData.role,
+            })
+          );
+        }
+      } else {
+        console.log("No such document!");
+      }
+    }
+  }
+
+  // Ensure all hooks are called before returning the conditional JSX
   if (!user) {
     return <LoginScreen />;
   }
@@ -41,27 +81,28 @@ function MainApp() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
+        headerShown: false,
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
           if (route.name === "Home") {
             iconName = focused ? "home" : "home-outline";
           } else if (route.name === "Counter") {
-            iconName = focused ? "calculator" : "calculator-outline";
+            iconName = focused ? "add-circle" : "add-circle-outline";
           } else if (route.name === "Settings") {
-            iconName = focused ? "settings" : "settings-outline";
+            iconName = focused ? "person-circle" : "person-circle-outline";
           }
 
-          // Return the appropriate icon from Ionicons
-          return <Ionicons name={iconName} size={size} color={color} />;
+          return <Ionicons name={iconName} size={30} color={color} />;
         },
-        tabBarActiveTintColor: "tomato",
-        tabBarInactiveTintColor: "gray",
+        tabBarShowLabel: false,
+        tabBarActiveTintColor: "#327FE9",
+        tabBarInactiveTintColor: "#000000",
       })}
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Counter" component={Counter} />
       <Tab.Screen name="Settings" component={SettingsScreen} />
+      <Tab.Screen name="Counter" component={Counter} />
+      <Tab.Screen name="Home" component={HomeScreen} />
     </Tab.Navigator>
   );
 }

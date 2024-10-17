@@ -140,6 +140,7 @@ const LoginScreen = () => {
             placeholderTextColor="#ffffffaa"
             onChangeText={setEmail}
             value={email}
+            autoCapitalize="none"
           />
           <TextInput
             keyboardType="visible-password"
@@ -148,6 +149,7 @@ const LoginScreen = () => {
             placeholderTextColor="#ffffffaa"
             onChangeText={setPassword}
             value={password}
+            autoCapitalize="none"
           />
           {isSignUp && ( // Only show the registration code input on sign up
             <TextInput
@@ -156,6 +158,7 @@ const LoginScreen = () => {
               placeholderTextColor="#ffffffaa"
               onChangeText={setRegistrationCode}
               value={registrationCode}
+              autoCapitalize="none"
             />
           )}
         </View>
