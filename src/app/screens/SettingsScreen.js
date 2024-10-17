@@ -26,12 +26,13 @@ export default function SettingsScreen() {
   const dispatch = useDispatch();
 
   const [displayName, setDisplayName] = useState(
-    currentUser.displayName || "اسم المستخدم"
+    currentUser.dispalyName || "اسم المستخدم"
   );
   const [email, setEmail] = useState(currentUser.email || "");
   const [role, setRole] = useState(currentUser.role || "مستخدم");
 
   const [isPasswordEditVisible, setPasswordEditVisible] = useState(false);
+  const [isNameEditVisible, setNameEditVisible] = useState(false);
   const [newPassword, setNewPassword] = useState("");
 
   const [isEmailEditVisible, setEmailEditVisible] = useState(false);
@@ -141,10 +142,58 @@ export default function SettingsScreen() {
         </View>
       </View>
 
+      {/* Name Section */}
+      <TouchableOpacity
+        style={styles.profileInfo}
+        onPress={() => setNameEditVisible(!isNameEditVisible)} // Toggle name edit only
+      >
+        <View
+          style={[
+            styles.profileInfoEntry,
+            {
+              flexDirection: isNameEditVisible ? "column-reverse" : "row",
+              gap: isNameEditVisible ? 8 : 0,
+            },
+          ]}
+        >
+          {isNameEditVisible ? (
+            <TextInput
+              style={styles.input}
+              placeholder="اسم المستخدم الجديد"
+              value={displayName}
+              onChangeText={setDisplayName}
+            />
+          ) : (
+            <Text style={styles.unactiveText}>{displayName}</Text>
+          )}
+          <Text style={styles.boldText}>اسم المستخدم</Text>
+        </View>
+
+        {isNameEditVisible && (
+          <View style={styles.btnGroup}>
+            <TouchableOpacity
+              style={styles.editBtn}
+              onPress={handleUpdateProfile}
+            >
+              <Text style={styles.btnText}>حفظ</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.cancelBtn}
+              onPress={() => {
+                setDisplayName(currentUser.displayName); // Fix typo here: currentUser.displayName, not dispalyName
+                setNameEditVisible(false);
+              }}
+            >
+              <Text style={styles.btnText}>إلغاء</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      </TouchableOpacity>
+
       {/* Password Section */}
       <TouchableOpacity
         style={styles.profileInfo}
-        onPress={() => setEditVisible(!isEditVisible)}
+        onPress={() => setPasswordEditVisible(!isPasswordEditVisible)} // Toggle password edit only
       >
         <View
           style={[
@@ -169,34 +218,23 @@ export default function SettingsScreen() {
           <Text style={styles.boldText}>كلمة المرور</Text>
         </View>
 
-        {isEditVisible && (
-          <View>
-            {isPasswordEditVisible ? (
-              <View style={styles.btnGroup}>
-                <TouchableOpacity
-                  style={styles.editBtn}
-                  onPress={handleUpdateProfile}
-                >
-                  <Text style={styles.btnText}>حفظ</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.cancelBtn}
-                  onPress={() => {
-                    setNewPassword("");
-                    setPasswordEditVisible(false);
-                  }}
-                >
-                  <Text style={styles.btnText}>إلغاء</Text>
-                </TouchableOpacity>
-              </View>
-            ) : (
-              <TouchableOpacity
-                style={styles.editBtn}
-                onPress={() => setPasswordEditVisible(true)}
-              >
-                <Text style={styles.btnText}>تعديل</Text>
-              </TouchableOpacity>
-            )}
+        {isPasswordEditVisible && (
+          <View style={styles.btnGroup}>
+            <TouchableOpacity
+              style={styles.editBtn}
+              onPress={handleUpdateProfile}
+            >
+              <Text style={styles.btnText}>حفظ</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.cancelBtn}
+              onPress={() => {
+                setNewPassword("");
+                setPasswordEditVisible(false);
+              }}
+            >
+              <Text style={styles.btnText}>إلغاء</Text>
+            </TouchableOpacity>
           </View>
         )}
       </TouchableOpacity>
@@ -279,6 +317,7 @@ export default function SettingsScreen() {
     </ScrollView>
   );
 }
+
 const styles = StyleSheet.create({
   verifyBtn: {
     padding: 8,
