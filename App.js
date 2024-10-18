@@ -1,60 +1,65 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { StatusBar } from "expo-status-bar";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import store from "./src/app/store";
-import { Counter } from "./src/app/features/counter/Counter";
 import HomeScreen from "./src/app/screens/HomeScreen";
 import SettingsScreen from "./src/app/screens/SettingsScreen";
-import LoginScreen from "./src/app/screens/LoginScreen"; // Import LoginScreen
-import { selectUser, setUser } from "./src/app/userSlice"; // Import user selector
-import { Ionicons } from "@expo/vector-icons"; // Import icons
-import * as Font from "expo-font"; // Import Font loading utility from Expo
-import AppLoading from "expo-app-loading"; // Optional: App loading while font is fetched
+import LoginScreen from "./src/app/screens/LoginScreen";
+import { selectUser, setUser } from "./src/app/userSlice";
+import { Ionicons } from "@expo/vector-icons";
+import * as Font from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./src/app/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "./src/app/firebase";
 
+SplashScreen.preventAutoHideAsync(); // Prevent the splash screen from auto-hiding
+
 const Tab = createBottomTabNavigator();
 
-function MainApp() {
+function MainApp({ setIsLoading }) {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
+        await user.reload(); // Force refresh user data
         dispatch(
           setUser({
             uid: user.uid,
             email: user.email,
             emailVerified: user.emailVerified,
-            dispalyName: user.displayName,
+            displayName: user.displayName,
           })
         );
       } else {
         dispatch(setUser(null)); // Reset user state on sign-out
       }
+      setIsLoading(false); // Stop loading once the auth state is handled
     });
-    return () => unsubscribe(); // Clean up subscription
-  }, [dispatch]);
+
+    return () => unsubscribe();
+  }, [dispatch, setIsLoading]);
 
   useEffect(() => {
-    fetchData();
-  }, [user]); // Run fetchData whenever user changes
+    if (user) {
+      fetchData();
+    }
+  }, [user]);
 
   async function fetchData() {
+    setIsLoading(true); // Start loading when fetching data
     if (user) {
       const docRef = doc(db, "users", user.uid);
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
         const userData = docSnap.data();
-
-        // Only update if registrationCode or role are different
         if (
           user.registrationCode !== userData.registrationCode ||
           user.role !== userData.role
@@ -67,28 +72,25 @@ function MainApp() {
             })
           );
         }
-      } else {
-        console.log("No such document!");
       }
     }
+    setIsLoading(false); // Stop loading after fetching data
   }
 
-  // Ensure all hooks are called before returning the conditional JSX
   if (!user) {
     return <LoginScreen />;
   }
 
   return (
     <Tab.Navigator
+      initialRouteName="Home"
+      backBehavior="initialRoute"
       screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarIcon: ({ focused, color, size }) => {
+        tabBarIcon: ({ focused, color }) => {
           let iconName;
-
           if (route.name === "Home") {
             iconName = focused ? "home" : "home-outline";
-          } else if (route.name === "Counter") {
-            iconName = focused ? "add-circle" : "add-circle-outline";
           } else if (route.name === "Settings") {
             iconName = focused ? "person-circle" : "person-circle-outline";
           }
@@ -101,7 +103,6 @@ function MainApp() {
       })}
     >
       <Tab.Screen name="Settings" component={SettingsScreen} />
-      <Tab.Screen name="Counter" component={Counter} />
       <Tab.Screen name="Home" component={HomeScreen} />
     </Tab.Navigator>
   );
@@ -109,6 +110,8 @@ function MainApp() {
 
 export default function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [isAppReady, setIsAppReady] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Add isLoading state here
 
   const loadFonts = async () => {
     await Font.loadAsync({
@@ -119,19 +122,35 @@ export default function App() {
     setFontsLoaded(true);
   };
 
+  const hideSplashScreen = useCallback(async () => {
+    if (fontsLoaded && isAppReady && !isLoading) {
+      await SplashScreen.hideAsync(); // Hide the splash screen when the app is ready
+    }
+  }, [fontsLoaded, isAppReady, isLoading]);
+
   useEffect(() => {
     loadFonts();
   }, []);
 
-  // Show loading screen until fonts are loaded
-  if (!fontsLoaded) {
-    return <AppLoading />;
+  useEffect(() => {
+    if (fontsLoaded) {
+      setTimeout(() => setIsAppReady(true), 250); // Simulate loading delay
+    }
+  }, [fontsLoaded]);
+
+  useEffect(() => {
+    hideSplashScreen();
+  }, [hideSplashScreen]);
+
+  if (!isAppReady || !fontsLoaded) {
+    // App stays on splash screen, no additional spinner needed
+    return null;
   }
 
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <MainApp />
+        <MainApp setIsLoading={setIsLoading} />
         <StatusBar style="auto" />
       </NavigationContainer>
     </Provider>
@@ -139,10 +158,10 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  spinnerContainer: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
     justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
   },
 });

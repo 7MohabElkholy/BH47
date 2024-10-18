@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "BH47",
+    "name": "Esketsh",
     "slug": "BH47",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -24,9 +24,7 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "expo-font"
-    ],
+    "plugins": ["expo-font"],
     "extra": {
       "eas": {
         "projectId": "a2fc485c-247f-4d69-afb4-5b2ce5018eeb"

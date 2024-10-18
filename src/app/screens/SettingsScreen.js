@@ -26,7 +26,7 @@ export default function SettingsScreen() {
   const dispatch = useDispatch();
 
   const [displayName, setDisplayName] = useState(
-    currentUser.dispalyName || "اسم المستخدم"
+    currentUser.displayName || "اسم المستخدم"
   );
   const [email, setEmail] = useState(currentUser.email || "");
   const [role, setRole] = useState(currentUser.role || "مستخدم");
