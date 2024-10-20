@@ -6,6 +6,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import store from "./src/app/store";
 import HomeScreen from "./src/app/screens/HomeScreen";
+// import AccountScreen from "./src/app/screens/AccountScreen";
 import SettingsScreen from "./src/app/screens/SettingsScreen";
 import LoginScreen from "./src/app/screens/LoginScreen";
 import { selectUser, setUser } from "./src/app/userSlice";
@@ -92,7 +93,7 @@ function MainApp({ setIsLoading }) {
           if (route.name === "Home") {
             iconName = focused ? "home" : "home-outline";
           } else if (route.name === "Settings") {
-            iconName = focused ? "person-circle" : "person-circle-outline";
+            iconName = focused ? "settings" : "settings-outline";
           }
 
           return <Ionicons name={iconName} size={30} color={color} />;
