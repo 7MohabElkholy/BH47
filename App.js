@@ -4,9 +4,11 @@ import { StyleSheet, View } from "react-native";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
+
 import store from "./src/app/store";
 import HomeScreen from "./src/app/screens/HomeScreen";
-// import AccountScreen from "./src/app/screens/AccountScreen";
+import AccountScreen from "./src/app/screens/AccountScreen";
 import SettingsScreen from "./src/app/screens/SettingsScreen";
 import LoginScreen from "./src/app/screens/LoginScreen";
 import { selectUser, setUser } from "./src/app/userSlice";
@@ -21,6 +23,7 @@ import { db } from "./src/app/firebase";
 SplashScreen.preventAutoHideAsync(); // Prevent the splash screen from auto-hiding
 
 const Tab = createBottomTabNavigator();
+const SettingsStack = createStackNavigator();
 
 function MainApp({ setIsLoading }) {
   const user = useSelector(selectUser);
@@ -82,6 +85,30 @@ function MainApp({ setIsLoading }) {
     return <LoginScreen />;
   }
 
+  function SettingsStackScreen() {
+    return (
+      <SettingsStack.Navigator initialRouteName="SettingsMain">
+        <SettingsStack.Screen
+          name="SettingsMain"
+          component={SettingsScreen}
+          options={{ headerShown: false }} // No header for the main settings screen
+        />
+        <SettingsStack.Screen
+          name="account"
+          component={AccountScreen} // Another screen inside settings
+          options={{
+            title: "إعدادت الحساب",
+            headerTitleStyle: {
+              fontFamily: "Tajawal-Bold", // Apply the custom font
+              fontSize: 20, // Optional: adjust font size
+              color: "#000", // Optional: adjust text color
+            },
+          }}
+        />
+      </SettingsStack.Navigator>
+    );
+  }
+
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -103,7 +130,7 @@ function MainApp({ setIsLoading }) {
         tabBarInactiveTintColor: "#000000",
       })}
     >
-      <Tab.Screen name="Settings" component={SettingsScreen} />
+      <Tab.Screen name="Settings" component={SettingsStackScreen} />
       <Tab.Screen name="Home" component={HomeScreen} />
     </Tab.Navigator>
   );
