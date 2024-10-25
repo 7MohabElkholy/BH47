@@ -89,6 +89,7 @@ const LoginScreen = () => {
         await setDoc(doc(db, "users", user.uid), {
           email: email,
           role: roleData.role,
+          roleIndex: roleData.roleIndex,
           registrationCode: registrationCode,
         });
 

@@ -19,6 +19,8 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./src/app/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "./src/app/firebase";
+import ReadScreen from "./src/app/screens/ReadScreen";
+import UploadScreen from "./src/app/screens/UploadScreen";
 
 SplashScreen.preventAutoHideAsync(); // Prevent the splash screen from auto-hiding
 
@@ -73,6 +75,7 @@ function MainApp({ setIsLoading }) {
               ...user,
               registrationCode: userData.registrationCode,
               role: userData.role,
+              roleIndex: userData.roleIndex,
             })
           );
         }
@@ -121,6 +124,10 @@ function MainApp({ setIsLoading }) {
             iconName = focused ? "home" : "home-outline";
           } else if (route.name === "Settings") {
             iconName = focused ? "settings" : "settings-outline";
+          } else if (route.name === "Read") {
+            iconName = focused ? "book" : "book-outline";
+          } else if (route.name === "Upload") {
+            iconName = focused ? "add-circle" : "add-circle-outline";
           }
 
           return <Ionicons name={iconName} size={30} color={color} />;
@@ -131,6 +138,13 @@ function MainApp({ setIsLoading }) {
       })}
     >
       <Tab.Screen name="Settings" component={SettingsStackScreen} />
+
+      {user.roleIndex === 1 ? (
+        <Tab.Screen name="Upload" component={UploadScreen} />
+      ) : (
+        <Tab.Screen name="Read" component={ReadScreen} />
+      )}
+
       <Tab.Screen name="Home" component={HomeScreen} />
     </Tab.Navigator>
   );
