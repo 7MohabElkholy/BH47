@@ -139,11 +139,7 @@ function MainApp({ setIsLoading }) {
     >
       <Tab.Screen name="Settings" component={SettingsStackScreen} />
 
-      {user.roleIndex === 1 ? (
-        <Tab.Screen name="Upload" component={UploadScreen} />
-      ) : (
-        <Tab.Screen name="Read" component={ReadScreen} />
-      )}
+      <Tab.Screen name="Read" component={ReadScreen} />
 
       <Tab.Screen name="Home" component={HomeScreen} />
     </Tab.Navigator>

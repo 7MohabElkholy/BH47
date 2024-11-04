@@ -5,25 +5,89 @@ import {
   TextInput,
   Switch,
   ScrollView,
+  TouchableOpacity,
+  ActivityIndicator,
+  Alert, // Import ActivityIndicator
 } from "react-native";
 import React, { useState } from "react";
 import DropDownPicker from "react-native-dropdown-picker";
 import { Ionicons } from "@expo/vector-icons";
+import * as DocumentPicker from "expo-document-picker"; // File Picker
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage"; // Firebase Storage
+import { getFirestore, collection, addDoc } from "firebase/firestore"; // Firestore
+import { storage, db } from "../firebase";
 
 const UploadScreen = () => {
-  const [title, setTitle] = useState(""); // State to manage title input
-  const [open, setOpen] = useState(false); // State to manage dropdown open/close
-  const [category, setCategory] = useState(null); // State to manage selected tag/category
-  const [description, setDescription] = useState(""); // State for description input
-  const [isNotificationEnabled, setIsNotificationEnabled] = useState(false); // State for notification toggle
+  const [title, setTitle] = useState("");
+  const [open, setOpen] = useState(false);
+  const [category, setCategory] = useState(null);
+  const [description, setDescription] = useState("");
+  const [isNotificationEnabled, setIsNotificationEnabled] = useState(false);
   const [items, setItems] = useState([
     { label: "محاضرة", value: "محاضرة" },
     { label: "ملخص", value: "ملخص" },
     { label: "خبر", value: "خبر" },
   ]);
+  const [file, setFile] = useState(null); // State for selected file
+  const [isUploading, setIsUploading] = useState(false); // State for upload status
 
   const toggleSwitch = () =>
     setIsNotificationEnabled((prevState) => !prevState);
+
+  const handleFilePick = async () => {
+    try {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: ["application/pdf", "video/*"], // Restrict to PDF or Video
+        copyToCacheDirectory: true,
+      });
+      if (result.type === "success") {
+        setFile(result); // Save file info
+        Alert(result);
+        console.log("WTF ?! ");
+      }
+    } catch (err) {
+      console.log("Error picking file:", err);
+    }
+  };
+
+  const handleUpload = async () => {
+    if (!file || !title || !category || !description) {
+      alert("Please fill out all fields and select a file");
+      return;
+    }
+    setIsUploading(true);
+    try {
+      // Initialize Firebase Storage
+      const storageRef = ref(storage, `uploads/${file.name}`); // Create storage reference
+
+      // Upload file to Firebase Storage
+      const response = await fetch(file.uri);
+      const blob = await response.blob();
+      await uploadBytes(storageRef, blob);
+
+      // Get file URL
+      const fileURL = await getDownloadURL(storageRef);
+
+      // Save metadata to Firestore
+      await addDoc(collection(db, "posts"), {
+        title,
+        category,
+        description,
+        fileURL, // Store file URL
+        createdAt: new Date(),
+        notificationEnabled: isNotificationEnabled,
+      });
+
+      alert("File uploaded successfully!");
+      setFile(null); // Clear file after upload
+      setTitle(""); // Clear fields
+      setDescription("");
+    } catch (err) {
+      console.error("Error uploading file:", err);
+      alert("Upload failed");
+    }
+    setIsUploading(false);
+  };
 
   return (
     <ScrollView style={styles.main}>
@@ -45,7 +109,7 @@ const UploadScreen = () => {
         </View>
       </View>
 
-      {/* tag section */}
+      {/* category section */}
       <View style={styles.profileInfo}>
         <View
           style={[styles.profileInfoEntry, { flexDirection: "column", gap: 8 }]}
@@ -77,8 +141,8 @@ const UploadScreen = () => {
             placeholder="اضف وصف للمنشور"
             value={description}
             onChangeText={setDescription}
-            multiline={true} // This makes it a text area
-            numberOfLines={5} // Adjust this to control the initial height of the text area
+            multiline={true}
+            numberOfLines={5}
           />
         </View>
       </View>
@@ -108,20 +172,40 @@ const UploadScreen = () => {
 
       {/* upload section */}
       <View style={styles.profileInfo}>
-        <View
-          style={[
-            styles.profileInfoEntry,
-            {
-              flexDirection: "column",
-              gap: 8,
-              alignItems: "center",
-            },
-          ]}
-        >
-          <Ionicons name="cloud-upload" size={48} color="#327FE9" />
-          <Text style={styles.boldText}>رفع ملف</Text>
-        </View>
+        <TouchableOpacity onPress={handleFilePick}>
+          <View
+            style={[
+              styles.profileInfoEntry,
+              { flexDirection: "column", gap: 8, alignItems: "center" },
+            ]}
+          >
+            <Ionicons name="cloud-upload" size={48} color="#327FE9" />
+            <Text style={styles.boldText}>
+              {file ? `Selected: ${file.name}` : "رفع ملف"}
+            </Text>
+          </View>
+        </TouchableOpacity>
       </View>
+
+      {/* Submit Button */}
+      <TouchableOpacity
+        onPress={handleUpload}
+        style={{ marginBottom: 64 }}
+        disabled={isUploading} // Disable button while uploading
+      >
+        <Text style={styles.boldText}>
+          {isUploading ? "Uploading..." : "Submit"}
+        </Text>
+      </TouchableOpacity>
+
+      {/* Loading Spinner */}
+      {isUploading && (
+        <ActivityIndicator
+          size="large"
+          color="#327FE9"
+          style={{ marginTop: 16 }}
+        />
+      )}
     </ScrollView>
   );
 };
@@ -170,8 +254,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: "#ccc",
     padding: 4,
-    width: "100%", // Adjust to your needs
-    textAlign: "right", // To keep the Arabic alignment
+    width: "100%",
+    textAlign: "right",
   },
 
   boldText: {
@@ -179,7 +263,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 
-  // Custom styles for the dropdown
   dropdown: {
     borderWidth: 1,
     borderColor: "#ccc",
@@ -193,10 +276,9 @@ const styles = StyleSheet.create({
 
   dropdownText: {
     fontFamily: "Tajawal-Medium",
-    textAlign: "right", // RTL alignment for Arabic
+    textAlign: "right",
   },
 
-  // Custom styles for the text area
   textArea: {
     fontFamily: "Tajawal-Medium",
     fontSize: 16,
@@ -205,8 +287,8 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     padding: 8,
     borderRadius: 8,
-    textAlignVertical: "top", // To align the text at the top of the text area
+    textAlignVertical: "top",
     width: "100%",
-    textAlign: "right", // To keep the Arabic alignment
+    textAlign: "right",
   },
 });
