@@ -3,14 +3,14 @@ import React, { useEffect, useState } from "react";
 
 import ImageReader from "../components/ImageReader";
 
-const EconmyScreen = () => {
+const MangmentScreen = () => {
   const [isReading, setIsReading] = useState(false);
   const [lectureIndex, setLectureIndex] = useState(undefined);
   const [subject, setSubject] = useState(undefined);
 
   handelClick = (lectureIndex) => {
     setLectureIndex(lectureIndex);
-    setSubject("Economy");
+    setSubject("Mangment");
     setIsReading(true);
   };
 
@@ -39,7 +39,7 @@ const EconmyScreen = () => {
         <Text style={styles.btnText}>المحاضرة الثالثة</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.btn}
         onPress={() => handelClick("FourthLecture")}
       >
@@ -51,12 +51,12 @@ const EconmyScreen = () => {
         onPress={() => handelClick("FifthLecture")}
       >
         <Text style={styles.btnText}>المحاضرة الخامسة</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };
 
-export default EconmyScreen;
+export default MangmentScreen;
 
 const styles = StyleSheet.create({
   main: {

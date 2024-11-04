@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, ActivityIndicator } from "react-native";
 import ImageViewer from "react-native-image-zoom-viewer";
 import * as SecureStore from "expo-secure-store";
 import * as FileSystem from "expo-file-system";
@@ -67,7 +67,7 @@ const ImageReader = ({ subject, lecture }) => {
           renderIndicator={() => null}
         />
       ) : (
-        <Text>Loading images...</Text>
+        <ActivityIndicator size="large" color="#0000ff" />
       )}
     </View>
   );

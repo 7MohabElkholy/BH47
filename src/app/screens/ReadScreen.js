@@ -13,7 +13,7 @@ const ReadScreen = ({ navigation }) => {
       <View style={styles.btnGroub}>
         <TouchableOpacity
           style={styles.btn}
-          onPress={() => navigation.navigate("ReadDetails")} // Navigate to ReadDetails
+          onPress={() => navigation.navigate("LawScreen")} // Navigate to ReadDetails
         >
           <Text style={styles.btnText}>قانون</Text>
         </TouchableOpacity>
@@ -23,6 +23,29 @@ const ReadScreen = ({ navigation }) => {
           onPress={() => navigation.navigate("EconmyScreen")} // Navigate to ReadDetails
         >
           <Text style={styles.btnText}>اقتصاد</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.btnGroub}>
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => navigation.navigate("EnglishScreen")} // Navigate to ReadDetails
+        >
+          <Text style={styles.btnText}>إنجليزي</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => navigation.navigate("AccountingScreen")} // Navigate to ReadDetails
+        >
+          <Text style={styles.btnText}>محاسبة</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.btnGroub}>
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => navigation.navigate("MangmentScreen")} // Navigate to ReadDetails
+        >
+          <Text style={styles.btnText}>إدارة اعمال</Text>
         </TouchableOpacity>
       </View>
     </View>

@@ -22,6 +22,10 @@ import { db } from "./src/app/firebase";
 import ReadScreen from "./src/app/screens/ReadScreen";
 import UploadScreen from "./src/app/screens/UploadScreen";
 import EconmyScreen from "./src/app/screens/EconmyScreen";
+import LawScreen from "./src/app/screens/LawScreen";
+import AccountingScreen from "./src/app/screens/AccountingScreen";
+import EnglishScreen from "./src/app/screens/EnglishScreen";
+import MangmentScreen from "./src/app/screens/MangmentScreen";
 
 SplashScreen.preventAutoHideAsync(); // Prevent the splash screen from auto-hiding
 
@@ -127,6 +131,54 @@ function MainApp({ setIsLoading }) {
           component={EconmyScreen} // A screen that displays the details
           options={{
             title: "ملخصات مبادئ الاقتصاد",
+            headerTitleStyle: {
+              fontFamily: "Tajawal-Bold",
+              fontSize: 20,
+              color: "#000",
+            },
+          }}
+        />
+        <ReadStack.Screen
+          name="LawScreen"
+          component={LawScreen} // A screen that displays the details
+          options={{
+            title: "ملخصات القانون",
+            headerTitleStyle: {
+              fontFamily: "Tajawal-Bold",
+              fontSize: 20,
+              color: "#000",
+            },
+          }}
+        />
+        <ReadStack.Screen
+          name="AccountingScreen"
+          component={AccountingScreen} // A screen that displays the details
+          options={{
+            title: "ملخصات مبادئ المحاسبة",
+            headerTitleStyle: {
+              fontFamily: "Tajawal-Bold",
+              fontSize: 20,
+              color: "#000",
+            },
+          }}
+        />
+        <ReadStack.Screen
+          name="EnglishScreen"
+          component={EnglishScreen} // A screen that displays the details
+          options={{
+            title: "ملخصات اللغة الاجنبية",
+            headerTitleStyle: {
+              fontFamily: "Tajawal-Bold",
+              fontSize: 20,
+              color: "#000",
+            },
+          }}
+        />
+        <ReadStack.Screen
+          name="MangmentScreen"
+          component={MangmentScreen} // A screen that displays the details
+          options={{
+            title: "ملخصات إدارة الاعمال",
             headerTitleStyle: {
               fontFamily: "Tajawal-Bold",
               fontSize: 20,
