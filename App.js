@@ -21,11 +21,13 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "./src/app/firebase";
 import ReadScreen from "./src/app/screens/ReadScreen";
 import UploadScreen from "./src/app/screens/UploadScreen";
+import EconmyScreen from "./src/app/screens/EconmyScreen";
 
 SplashScreen.preventAutoHideAsync(); // Prevent the splash screen from auto-hiding
 
 const Tab = createBottomTabNavigator();
 const SettingsStack = createStackNavigator();
+const ReadStack = createStackNavigator();
 
 function MainApp({ setIsLoading }) {
   const user = useSelector(selectUser);
@@ -112,6 +114,30 @@ function MainApp({ setIsLoading }) {
     );
   }
 
+  function ReadStackScreen() {
+    return (
+      <ReadStack.Navigator initialRouteName="ReadMain">
+        <ReadStack.Screen
+          name="ReadMain"
+          component={ReadScreen}
+          options={{ headerShown: false }} // No header for the main read screen
+        />
+        <ReadStack.Screen
+          name="EconmyScreen"
+          component={EconmyScreen} // A screen that displays the details
+          options={{
+            title: "ملخصات مبادئ الاقتصاد",
+            headerTitleStyle: {
+              fontFamily: "Tajawal-Bold",
+              fontSize: 20,
+              color: "#000",
+            },
+          }}
+        />
+      </ReadStack.Navigator>
+    );
+  }
+
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -138,9 +164,8 @@ function MainApp({ setIsLoading }) {
       })}
     >
       <Tab.Screen name="Settings" component={SettingsStackScreen} />
-
-      <Tab.Screen name="Read" component={ReadScreen} />
-
+      <Tab.Screen name="Read" component={ReadStackScreen} />
+      {/* Updated here */}
       <Tab.Screen name="Home" component={HomeScreen} />
     </Tab.Navigator>
   );

@@ -1,8 +1,8 @@
 import React from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
-import ImageReader from "../components/ImageReader";
 
-const ReadScreen = () => {
+const ReadScreen = ({ navigation }) => {
+  // Accept navigation prop
   return (
     <View style={styles.main}>
       <View style={styles.heading}>
@@ -11,11 +11,17 @@ const ReadScreen = () => {
       </View>
 
       <View style={styles.btnGroub}>
-        <TouchableOpacity style={styles.btn}>
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => navigation.navigate("ReadDetails")} // Navigate to ReadDetails
+        >
           <Text style={styles.btnText}>قانون</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.btn}>
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => navigation.navigate("EconmyScreen")} // Navigate to ReadDetails
+        >
           <Text style={styles.btnText}>اقتصاد</Text>
         </TouchableOpacity>
       </View>
@@ -24,6 +30,8 @@ const ReadScreen = () => {
 };
 
 export default ReadScreen;
+
+// Styles remain unchanged
 
 const styles = StyleSheet.create({
   main: {
@@ -73,6 +81,6 @@ const styles = StyleSheet.create({
 
   btnText: {
     fontFamily: "Tajawal-Medium",
-    fontSize: 24,
+    fontSize: 18,
   },
 });
