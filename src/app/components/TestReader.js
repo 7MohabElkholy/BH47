@@ -18,6 +18,7 @@ const TestReader = ({ testData, subjectKey }) => {
   if (!testData) return <Text>Loading test...</Text>;
 
   const handleSelectAnswer = (questionId, option) => {
+    if (showResult) return; // Prevent selecting answers after submission
     setSelectedAnswers((prevAnswers) => ({
       ...prevAnswers,
       [questionId]: option,
@@ -57,8 +58,6 @@ const TestReader = ({ testData, subjectKey }) => {
       wrongAnswers: testData.questions.length - correctCount,
     };
 
-    // Display the result in the modal instead of using Alert
-    // const message = `Correct: ${correctCount}, Incorrect: ${result.wrongAnswers}`;
     const message = `تم حفظ تقريرك! \n\n الإجابات الصحيحة ${correctCount}\nالإجابات الخاطئة ${result.wrongAnswers}\n\n يمكنك رؤية تقريقك في الشاشاة الرئيسية`;
 
     setModalMessage(message);
@@ -72,6 +71,26 @@ const TestReader = ({ testData, subjectKey }) => {
     setModalVisible(false); // Close the modal when the user presses the button
   };
 
+  const getOptionStyle = (question, option) => {
+    const isSelected = selectedAnswers[question.id] === option;
+    const isCorrect = option === question.correctAnswer;
+    const isWrong = isSelected && !isCorrect;
+
+    if (showResult) {
+      if (isCorrect) {
+        return [styles.option, styles.correctOption]; // Green background for correct answers
+      }
+      if (isWrong) {
+        return [styles.option, styles.wrongOption]; // Red background for wrong answers
+      }
+    }
+
+    return [
+      styles.option,
+      isSelected && styles.selectedOption, // Blue background for selected option
+    ];
+  };
+
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.title}>{testData.testTitle}</Text>
@@ -81,12 +100,9 @@ const TestReader = ({ testData, subjectKey }) => {
           {question.options.map((option, idx) => (
             <TouchableOpacity
               key={idx}
-              style={[
-                styles.option,
-                selectedAnswers[question.id] === option &&
-                  styles.selectedOption,
-              ]}
+              style={getOptionStyle(question, option)} // Apply dynamic styles based on selection and correctness
               onPress={() => handleSelectAnswer(question.id, option)}
+              disabled={showResult} // Disable selecting after submission
             >
               <Text style={styles.optionText}>{option}</Text>
             </TouchableOpacity>
@@ -152,6 +168,14 @@ const styles = StyleSheet.create({
   selectedOption: {
     backgroundColor: "#cce5ff",
     borderColor: "#0056b3",
+  },
+  correctOption: {
+    backgroundColor: "#c8e6c9", // Light green
+    borderColor: "#388e3c", // Green border
+  },
+  wrongOption: {
+    backgroundColor: "#f8d7da", // Light red
+    borderColor: "#e53935", // Red border
   },
   optionText: {
     fontSize: 16,

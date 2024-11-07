@@ -57,12 +57,12 @@ const ReadScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.btnGroub}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.btn}
           onPress={() => navigation.navigate("LawScreen")} // Navigate to ReadDetails
         >
           <Text style={styles.btnText}>قانون</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         <TouchableOpacity
           style={styles.btn}
@@ -72,7 +72,7 @@ const ReadScreen = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.btnGroub}>
+      {/* <View style={styles.btnGroub}>
         <TouchableOpacity
           style={styles.btn}
           onPress={() => navigation.navigate("EnglishScreen")} // Navigate to ReadDetails
@@ -85,11 +85,11 @@ const ReadScreen = ({ navigation }) => {
         >
           <Text style={styles.btnText}>محاسبة</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
       <View style={styles.btnGroub}>
         <TouchableOpacity
           style={styles.btn}
-          onPress={() => navigation.navigate("MangmentScreen")} // Navigate to ReadDetails
+          onPress={() => navigation.navigate("MangmentTestScreen")} // Navigate to ReadDetails
         >
           <Text style={styles.btnText}>إدارة اعمال</Text>
         </TouchableOpacity>

@@ -1,6 +1,6 @@
 // src/screens/HomeScreen.js
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import logo from "../../imgs/logo.png";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomModal from "../features/modal/CustomModal";
@@ -8,15 +8,31 @@ import * as SecureStore from "expo-secure-store";
 
 export default function HomeScreen({ navigation }) {
   const [showChangelog, setShowChangelog] = useState(false);
-  const [testReports, setTestReports] = useState([]);
-  const currentVersion = "0.2.0";
+  const [econmyTestReports, setEconmyTestReports] = useState([]);
+  const [mangmentTestReports, setMangmentTestReports] = useState([]);
+  const currentVersion = "0.3.0";
 
   useEffect(() => {
     // Fetch test results every time the screen is focused
     const focusListener = navigation.addListener("focus", async () => {
       const storedReports = await SecureStore.getItemAsync("economy_reports");
       if (storedReports) {
-        setTestReports(JSON.parse(storedReports));
+        setEconmyTestReports(JSON.parse(storedReports));
+      }
+    });
+
+    // Clean up the listener when the component is unmounted
+    return () => {
+      focusListener(); // Removes the focus listener when HomeScreen unmounts
+    };
+  }, [navigation]);
+
+  useEffect(() => {
+    // Fetch test results every time the screen is focused
+    const focusListener = navigation.addListener("focus", async () => {
+      const storedReports = await SecureStore.getItemAsync("mangment_reports");
+      if (storedReports) {
+        setMangmentTestReports(JSON.parse(storedReports));
       }
     });
 
@@ -44,11 +60,11 @@ export default function HomeScreen({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <CustomModal
         visible={showChangelog}
         message={
-          "تم تحديث البرنامج! \n\n+ رسالة التحديث\n+ رقم الصفحة في وضع القرائة\n+ شاشة معلومات التطبيق"
+          "تم تحديث البرنامج! \n\n+ اسئلة على المحاضرات\n+ تقارير الاسئلة"
         }
         onClose={handleCloseModal}
       />
@@ -56,13 +72,13 @@ export default function HomeScreen({ navigation }) {
       <View style={styles.news}>
         <Text style={styles.newsHeading}>ما الجديد؟</Text>
         <Text style={styles.newsBody}>مراجعة اللغة الأجنبية</Text>
-        <Text style={styles.newsBody}>محاضرات القانون</Text>
+        <Text style={styles.newsBody}>اسئلة على المحاضرات</Text>
       </View>
 
       <View style={styles.news}>
         <Text style={styles.newsHeading}>تقارير أسئلة الاقتصاد</Text>
-        {testReports.length > 0 ? (
-          testReports.map((report, index) => (
+        {econmyTestReports.length > 0 ? (
+          econmyTestReports.map((report, index) => (
             <View key={index} style={styles.reportItem}>
               <Text style={styles.newsBody}>{report.testName}</Text>
               <Text style={styles.dateBody}>
@@ -77,7 +93,26 @@ export default function HomeScreen({ navigation }) {
           <Text style={styles.newsBody}>لا توجد نتائج مسجلة.</Text>
         )}
       </View>
-    </View>
+
+      <View style={[styles.news, { marginBottom: 48 }]}>
+        <Text style={styles.newsHeading}>تقارير أسئلة إدارة الأعمال</Text>
+        {mangmentTestReports.length > 0 ? (
+          mangmentTestReports.map((report, index) => (
+            <View key={index} style={styles.reportItem}>
+              <Text style={styles.newsBody}>{report.testName}</Text>
+              <Text style={styles.dateBody}>
+                {new Date(report.timestamp).toLocaleString()}
+              </Text>
+              <Text style={styles.newsBody}>
+                الدرجة: {report.grade} / {report.totalQuestions}
+              </Text>
+            </View>
+          ))
+        ) : (
+          <Text style={styles.newsBody}>لا توجد نتائج مسجلة.</Text>
+        )}
+      </View>
+    </ScrollView>
   );
 }
 

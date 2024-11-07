@@ -11,7 +11,7 @@ import TestReader from "../../components/TestReader";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../firebase"; // Assuming firebase is set up in firebase.js
 
-const EconmyTestScreen = () => {
+const MangmentTestScreen = () => {
   const [isTakingTest, setIsTakingTest] = useState(false);
   const [testData, setTestData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -19,7 +19,7 @@ const EconmyTestScreen = () => {
   const handleFetchTest = async (testIndex) => {
     setLoading(true);
     try {
-      const fileRef = ref(storage, `tests/Economy/${testIndex}.json`); // Path in Firebase Storage
+      const fileRef = ref(storage, `tests/Mangment/${testIndex}.json`); // Path in Firebase Storage
       const url = await getDownloadURL(fileRef);
 
       // Fetch JSON data from the URL
@@ -36,7 +36,7 @@ const EconmyTestScreen = () => {
   };
 
   return isTakingTest ? (
-    <TestReader testData={testData} subjectKey="economy_reports" />
+    <TestReader testData={testData} subjectKey="mangment_reports" />
   ) : (
     <View style={styles.main}>
       {loading && <ActivityIndicator size="large" color="#0000ff" />}
@@ -46,12 +46,12 @@ const EconmyTestScreen = () => {
       >
         <Text style={styles.btnText}>المحاضرة الاولى</Text>
       </TouchableOpacity>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.btn}
         onPress={() => handleFetchTest("test2")}
       >
         <Text style={styles.btnText}>المحاضرة الثانية</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       {/* <TouchableOpacity
         style={styles.btn}
         onPress={() => handleFetchTest("economyTest3")}
@@ -74,7 +74,7 @@ const EconmyTestScreen = () => {
   );
 };
 
-export default EconmyTestScreen;
+export default MangmentTestScreen;
 
 const styles = StyleSheet.create({
   main: {

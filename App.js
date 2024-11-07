@@ -29,6 +29,7 @@ import MangmentScreen from "./src/app/screens/lectures/MangmentScreen";
 import InfoScreen from "./src/app/screens/InfoScreen";
 import SupportScreen from "./src/app/screens/SupportScreen";
 import EconmyTestScreen from "./src/app/screens/lecturesTests/EconmyTestScreen";
+import MangmentTestScreen from "./src/app/screens/lecturesTests/MangmentTestScreen";
 
 SplashScreen.preventAutoHideAsync(); // Prevent the splash screen from auto-hiding
 
@@ -218,6 +219,18 @@ function MainApp({ setIsLoading }) {
           component={EconmyTestScreen} // A screen that displays the details
           options={{
             title: "أسئلة مبادئ الاقتصاد",
+            headerTitleStyle: {
+              fontFamily: "Tajawal-Bold",
+              fontSize: 20,
+              color: "#000",
+            },
+          }}
+        />
+        <ReadStack.Screen
+          name="MangmentTestScreen"
+          component={MangmentTestScreen} // A screen that displays the details
+          options={{
+            title: "أسئلة مبادئ إدارة الأعمال",
             headerTitleStyle: {
               fontFamily: "Tajawal-Bold",
               fontSize: 20,

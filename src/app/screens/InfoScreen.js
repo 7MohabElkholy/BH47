@@ -35,7 +35,7 @@ const InfoScreen = () => {
         </Text>
       </View>
       <View style={{ paddingHorizontal: 16 }}>
-        <Text style={styles.bodyText}>إصدار البرنامج: 0.2.1</Text>
+        <Text style={styles.bodyText}>إصدار البرنامج: 0.3.0</Text>
         <Text style={styles.bodyText}>القائمين على البرنامج:</Text>
         <Text style={styles.bodyText}>
           مبرمج / مراجع تجربة المستخدم: مهاب الخولي
@@ -43,6 +43,7 @@ const InfoScreen = () => {
         <Text style={styles.bodyText}>
           قائد البرنامج / مصمم أول: أسماء الزناتي
         </Text>
+        <Text style={styles.bodyText}>تسويق : فتحي نصار</Text>
       </View>
     </View>
   );
