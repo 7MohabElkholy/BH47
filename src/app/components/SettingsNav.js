@@ -29,6 +29,7 @@ const SettingsNav = (props) => {
 
         // Elevation for Android
         elevation: 5,
+        marginBottom: 24,
       }}
       onPress={() => navigation.navigate(props.nav)} // Navigate to the provided route
     >

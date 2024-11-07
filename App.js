@@ -26,6 +26,8 @@ import LawScreen from "./src/app/screens/LawScreen";
 import AccountingScreen from "./src/app/screens/AccountingScreen";
 import EnglishScreen from "./src/app/screens/EnglishScreen";
 import MangmentScreen from "./src/app/screens/MangmentScreen";
+import InfoScreen from "./src/app/screens/InfoScreen";
+import SupportScreen from "./src/app/screens/SupportScreen";
 
 SplashScreen.preventAutoHideAsync(); // Prevent the splash screen from auto-hiding
 
@@ -107,6 +109,30 @@ function MainApp({ setIsLoading }) {
           component={AccountScreen} // Another screen inside settings
           options={{
             title: "إعدادت الحساب",
+            headerTitleStyle: {
+              fontFamily: "Tajawal-Bold", // Apply the custom font
+              fontSize: 20, // Optional: adjust font size
+              color: "#000", // Optional: adjust text color
+            },
+          }}
+        />
+        <SettingsStack.Screen
+          name="info"
+          component={InfoScreen} // Another screen inside settings
+          options={{
+            title: "معلومات التطبيق",
+            headerTitleStyle: {
+              fontFamily: "Tajawal-Bold", // Apply the custom font
+              fontSize: 20, // Optional: adjust font size
+              color: "#000", // Optional: adjust text color
+            },
+          }}
+        />
+        <SettingsStack.Screen
+          name="support"
+          component={SupportScreen} // Another screen inside settings
+          options={{
+            title: "تواصل معنا",
             headerTitleStyle: {
               fontFamily: "Tajawal-Bold", // Apply the custom font
               fontSize: 20, // Optional: adjust font size

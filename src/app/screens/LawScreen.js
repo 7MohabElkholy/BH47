@@ -10,7 +10,7 @@ const LawScreen = () => {
 
   handelClick = (lectureIndex) => {
     setLectureIndex(lectureIndex);
-    setSubject("Law");
+    setSubject("law");
     setIsReading(true);
   };
 
@@ -18,7 +18,7 @@ const LawScreen = () => {
     <ImageReader lecture={lectureIndex} subject={subject} />
   ) : (
     <View style={styles.main}>
-      {/* <TouchableOpacity
+      <TouchableOpacity
         style={styles.btn}
         onPress={() => handelClick("FristLecture")}
       >
@@ -51,7 +51,14 @@ const LawScreen = () => {
         onPress={() => handelClick("FifthLecture")}
       >
         <Text style={styles.btnText}>المحاضرة الخامسة</Text>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.btn}
+        onPress={() => handelClick("SixthLecture")}
+      >
+        <Text style={styles.btnText}>المحاضرة السادسة</Text>
+      </TouchableOpacity>
     </View>
   );
 };

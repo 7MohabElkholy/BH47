@@ -8,7 +8,10 @@ import { storage } from "../firebase";
 
 const ImageReader = ({ subject, lecture }) => {
   const [images, setImages] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isIndicatorVisible, setIsIndicatorVisible] = useState(true); // Track visibility of the indicator
   const cacheKey = `${subject}_${lecture}`;
+  let hideTimeout;
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -27,6 +30,9 @@ const ImageReader = ({ subject, lecture }) => {
     };
 
     fetchImages();
+
+    // Clean up timeout on component unmount
+    return () => clearTimeout(hideTimeout);
   }, [subject, lecture]);
 
   const downloadAndCacheImages = async () => {
@@ -57,15 +63,39 @@ const ImageReader = ({ subject, lecture }) => {
     return urls;
   };
 
+  const handlePageChange = (index) => {
+    setCurrentPage(index + 1);
+    setIsIndicatorVisible(true);
+
+    // Clear any previous timeout
+    if (hideTimeout) clearTimeout(hideTimeout);
+
+    // Set a new timeout to hide the indicator after 3 seconds
+    hideTimeout = setTimeout(() => {
+      setIsIndicatorVisible(false);
+    }, 3000);
+  };
+
   return (
     <View style={styles.container}>
       {images.length > 0 ? (
-        <ImageViewer
-          imageUrls={images}
-          enableSwipeDown={false}
-          backgroundColor="#fff"
-          renderIndicator={() => null}
-        />
+        <>
+          <ImageViewer
+            imageUrls={images}
+            enableSwipeDown={false}
+            backgroundColor="#fff"
+            renderIndicator={() => null}
+            saveToLocalByLongPress={false}
+            onChange={handlePageChange} // Track page changes
+          />
+          {isIndicatorVisible && (
+            <View style={styles.pageIndicator}>
+              <Text style={styles.pageText}>
+                {currentPage} / {images.length}
+              </Text>
+            </View>
+          )}
+        </>
       ) : (
         <ActivityIndicator size="large" color="#0000ff" />
       )}
@@ -77,6 +107,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+  },
+  pageIndicator: {
+    alignSelf: "center",
+    position: "absolute",
+    bottom: 20,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 5,
+  },
+  pageText: {
+    color: "#fff",
+    fontSize: 16,
+    textAlign: "center",
   },
 });
 

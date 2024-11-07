@@ -26,7 +26,7 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": ["expo-font", "expo-secure-store"],
+    "plugins": ["expo-font", "expo-secure-store", "expo-updates"],
     "extra": {
       "eas": {
         "projectId": "a2fc485c-247f-4d69-afb4-5b2ce5018eeb"
@@ -36,6 +36,7 @@
       "policy": "appVersion"
     },
     "updates": {
+      "fallbackToCacheTimeout": 0,
       "url": "https://u.expo.dev/a2fc485c-247f-4d69-afb4-5b2ce5018eeb"
     }
   }

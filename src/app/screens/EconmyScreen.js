@@ -1,6 +1,5 @@
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Alert } from "react-native";
 import React, { useEffect, useState } from "react";
-
 import ImageReader from "../components/ImageReader";
 
 const EconmyScreen = () => {
@@ -11,6 +10,7 @@ const EconmyScreen = () => {
   handelClick = (lectureIndex) => {
     setLectureIndex(lectureIndex);
     setSubject("Economy");
+
     setIsReading(true);
   };
 
@@ -20,7 +20,7 @@ const EconmyScreen = () => {
     <View style={styles.main}>
       <TouchableOpacity
         style={styles.btn}
-        onPress={() => handelClick("FristLecture")}
+        onPress={() => handelClick("FirstLecture")}
       >
         <Text style={styles.btnText}>المحاضرة الاولى</Text>
       </TouchableOpacity>

@@ -18,14 +18,14 @@ const EnglishScreen = () => {
     <ImageReader lecture={lectureIndex} subject={subject} />
   ) : (
     <View style={styles.main}>
-      {/* <TouchableOpacity
+      <TouchableOpacity
         style={styles.btn}
         onPress={() => handelClick("FristLecture")}
       >
-        <Text style={styles.btnText}>المحاضرة الاولى</Text>
+        <Text style={styles.btnText}>مراجعة الميد تيرم</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.btn}
         onPress={() => handelClick("SecoundLecture")}
       >
