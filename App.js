@@ -21,13 +21,14 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "./src/app/firebase";
 import ReadScreen from "./src/app/screens/ReadScreen";
 import UploadScreen from "./src/app/screens/UploadScreen";
-import EconmyScreen from "./src/app/screens/EconmyScreen";
-import LawScreen from "./src/app/screens/LawScreen";
-import AccountingScreen from "./src/app/screens/AccountingScreen";
-import EnglishScreen from "./src/app/screens/EnglishScreen";
-import MangmentScreen from "./src/app/screens/MangmentScreen";
+import EconmyScreen from "./src/app/screens/lectures/EconmyScreen";
+import LawScreen from "./src/app/screens/lectures/LawScreen";
+import AccountingScreen from "./src/app/screens/lectures/AccountingScreen";
+import EnglishScreen from "./src/app/screens/lectures/EnglishScreen";
+import MangmentScreen from "./src/app/screens/lectures/MangmentScreen";
 import InfoScreen from "./src/app/screens/InfoScreen";
 import SupportScreen from "./src/app/screens/SupportScreen";
+import EconmyTestScreen from "./src/app/screens/lecturesTests/EconmyTestScreen";
 
 SplashScreen.preventAutoHideAsync(); // Prevent the splash screen from auto-hiding
 
@@ -205,6 +206,18 @@ function MainApp({ setIsLoading }) {
           component={MangmentScreen} // A screen that displays the details
           options={{
             title: "ملخصات إدارة الاعمال",
+            headerTitleStyle: {
+              fontFamily: "Tajawal-Bold",
+              fontSize: 20,
+              color: "#000",
+            },
+          }}
+        />
+        <ReadStack.Screen
+          name="EconmyTestScreen"
+          component={EconmyTestScreen} // A screen that displays the details
+          options={{
+            title: "أسئلة مبادئ الاقتصاد",
             headerTitleStyle: {
               fontFamily: "Tajawal-Bold",
               fontSize: 20,

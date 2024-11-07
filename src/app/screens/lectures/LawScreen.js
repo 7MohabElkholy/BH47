@@ -1,16 +1,16 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 
-import ImageReader from "../components/ImageReader";
+import ImageReader from "../../components/ImageReader";
 
-const MangmentScreen = () => {
+const LawScreen = () => {
   const [isReading, setIsReading] = useState(false);
   const [lectureIndex, setLectureIndex] = useState(undefined);
   const [subject, setSubject] = useState(undefined);
 
   handelClick = (lectureIndex) => {
     setLectureIndex(lectureIndex);
-    setSubject("Mangment");
+    setSubject("law");
     setIsReading(true);
   };
 
@@ -39,7 +39,7 @@ const MangmentScreen = () => {
         <Text style={styles.btnText}>المحاضرة الثالثة</Text>
       </TouchableOpacity>
 
-      {/* <TouchableOpacity
+      <TouchableOpacity
         style={styles.btn}
         onPress={() => handelClick("FourthLecture")}
       >
@@ -51,12 +51,19 @@ const MangmentScreen = () => {
         onPress={() => handelClick("FifthLecture")}
       >
         <Text style={styles.btnText}>المحاضرة الخامسة</Text>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.btn}
+        onPress={() => handelClick("SixthLecture")}
+      >
+        <Text style={styles.btnText}>المحاضرة السادسة</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
-export default MangmentScreen;
+export default LawScreen;
 
 const styles = StyleSheet.create({
   main: {

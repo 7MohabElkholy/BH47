@@ -48,6 +48,52 @@ const ReadScreen = ({ navigation }) => {
           <Text style={styles.btnText}>إدارة اعمال</Text>
         </TouchableOpacity>
       </View>
+
+      {/* tests */}
+
+      <View style={styles.heading}>
+        <Text style={[styles.h1, { marginTop: 32 }]}>أسئلة المحاضرات</Text>
+        <View style={styles.hr} />
+      </View>
+
+      <View style={styles.btnGroub}>
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => navigation.navigate("LawScreen")} // Navigate to ReadDetails
+        >
+          <Text style={styles.btnText}>قانون</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => navigation.navigate("EconmyTestScreen")}
+        >
+          <Text style={styles.btnText}>اقتصاد</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.btnGroub}>
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => navigation.navigate("EnglishScreen")} // Navigate to ReadDetails
+        >
+          <Text style={styles.btnText}>إنجليزي</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => navigation.navigate("AccountingScreen")} // Navigate to ReadDetails
+        >
+          <Text style={styles.btnText}>محاسبة</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.btnGroub}>
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => navigation.navigate("MangmentScreen")} // Navigate to ReadDetails
+        >
+          <Text style={styles.btnText}>إدارة اعمال</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };

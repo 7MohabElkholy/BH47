@@ -1,16 +1,16 @@
-import { StyleSheet, Text, View, TouchableOpacity, Alert } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
-import ImageReader from "../components/ImageReader";
 
-const EconmyScreen = () => {
+import ImageReader from "../../components/ImageReader";
+
+const AccountingScreen = () => {
   const [isReading, setIsReading] = useState(false);
   const [lectureIndex, setLectureIndex] = useState(undefined);
   const [subject, setSubject] = useState(undefined);
 
   handelClick = (lectureIndex) => {
     setLectureIndex(lectureIndex);
-    setSubject("Economy");
-
+    setSubject("Accounting");
     setIsReading(true);
   };
 
@@ -18,9 +18,9 @@ const EconmyScreen = () => {
     <ImageReader lecture={lectureIndex} subject={subject} />
   ) : (
     <View style={styles.main}>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.btn}
-        onPress={() => handelClick("FirstLecture")}
+        onPress={() => handelClick("FristLecture")}
       >
         <Text style={styles.btnText}>المحاضرة الاولى</Text>
       </TouchableOpacity>
@@ -51,12 +51,12 @@ const EconmyScreen = () => {
         onPress={() => handelClick("FifthLecture")}
       >
         <Text style={styles.btnText}>المحاضرة الخامسة</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };
 
-export default EconmyScreen;
+export default AccountingScreen;
 
 const styles = StyleSheet.create({
   main: {

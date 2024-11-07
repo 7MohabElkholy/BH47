@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 
-import ImageReader from "../components/ImageReader";
+import ImageReader from "../../components/ImageReader";
 
 const EnglishScreen = () => {
   const [isReading, setIsReading] = useState(false);
