@@ -18,14 +18,14 @@ const AccountingScreen = () => {
     <ImageReader lecture={lectureIndex} subject={subject} />
   ) : (
     <View style={styles.main}>
-      {/* <TouchableOpacity
+      <TouchableOpacity
         style={styles.btn}
         onPress={() => handelClick("FristLecture")}
       >
-        <Text style={styles.btnText}>المحاضرة الاولى</Text>
+        <Text style={styles.btnText}>شامل محاسبة</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.btn}
         onPress={() => handelClick("SecoundLecture")}
       >

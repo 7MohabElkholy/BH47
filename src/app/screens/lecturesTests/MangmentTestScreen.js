@@ -46,19 +46,19 @@ const MangmentTestScreen = () => {
       >
         <Text style={styles.btnText}>المحاضرة الاولى</Text>
       </TouchableOpacity>
-      {/* <TouchableOpacity
+      <TouchableOpacity
         style={styles.btn}
         onPress={() => handleFetchTest("test2")}
       >
         <Text style={styles.btnText}>المحاضرة الثانية</Text>
-      </TouchableOpacity> */}
-      {/* <TouchableOpacity
+      </TouchableOpacity>
+      <TouchableOpacity
         style={styles.btn}
-        onPress={() => handleFetchTest("economyTest3")}
+        onPress={() => handleFetchTest("test3")}
       >
         <Text style={styles.btnText}>المحاضرة الثالثة</Text>
       </TouchableOpacity>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.btn}
         onPress={() => handleFetchTest("economyTest4")}
       >
