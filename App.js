@@ -20,7 +20,6 @@ import { auth } from "./src/app/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "./src/app/firebase";
 import ReadScreen from "./src/app/screens/ReadScreen";
-import UploadScreen from "./src/app/screens/UploadScreen";
 import EconmyScreen from "./src/app/screens/lectures/EconmyScreen";
 import LawScreen from "./src/app/screens/lectures/LawScreen";
 import AccountingScreen from "./src/app/screens/lectures/AccountingScreen";
@@ -31,7 +30,7 @@ import SupportScreen from "./src/app/screens/SupportScreen";
 import EconmyTestScreen from "./src/app/screens/lecturesTests/EconmyTestScreen";
 import MangmentTestScreen from "./src/app/screens/lecturesTests/MangmentTestScreen";
 
-SplashScreen.preventAutoHideAsync(); // Prevent the splash screen from auto-hiding
+SplashScreen.preventAutoHideAsync();
 
 const Tab = createBottomTabNavigator();
 const SettingsStack = createStackNavigator();
@@ -86,6 +85,8 @@ function MainApp({ setIsLoading }) {
               registrationCode: userData.registrationCode,
               role: userData.role,
               roleIndex: userData.roleIndex,
+              remainingDays: userData.remainingDays,
+              isLocked: userData.remainingDays <= 0 ? true : false,
             })
           );
         }
@@ -110,7 +111,7 @@ function MainApp({ setIsLoading }) {
           name="account"
           component={AccountScreen} // Another screen inside settings
           options={{
-            title: "إعدادت الحساب",
+            title: "إعدادات الحساب",
             headerTitleStyle: {
               fontFamily: "Tajawal-Bold", // Apply the custom font
               fontSize: 20, // Optional: adjust font size

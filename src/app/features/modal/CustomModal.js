@@ -2,7 +2,7 @@
 import React from "react";
 import { Modal, View, Text, TouchableOpacity, StyleSheet } from "react-native";
 
-const CustomModal = ({ visible, message, onClose }) => {
+const CustomModal = ({ visible, message, onClose, accLock }) => {
   return (
     <Modal
       animationType="fade"
@@ -15,7 +15,9 @@ const CustomModal = ({ visible, message, onClose }) => {
         <View style={styles.modalContent}>
           <Text style={styles.modalMessage}>{message}</Text>
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-            <Text style={styles.closeButtonText}>فهمت</Text>
+            <Text style={styles.closeButtonText}>
+              {accLock ? "تسجيل الخروج" : "فهمت"}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>

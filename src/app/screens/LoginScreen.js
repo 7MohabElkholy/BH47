@@ -91,6 +91,8 @@ const LoginScreen = () => {
           role: roleData.role,
           roleIndex: roleData.roleIndex,
           registrationCode: registrationCode,
+          remainingDays: roleData.createdDays,
+          lastLoginDate: new Date().toISOString().split("T")[0],
         });
 
         await updateDoc(codeRef, {

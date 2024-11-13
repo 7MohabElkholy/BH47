@@ -136,9 +136,15 @@ export default function AccountScreen() {
         </View>
         <View style={styles.profileInfoEntry}>
           <Text style={styles.unactiveText}>
-            {"غير محدد"} {/* Replace this with actual expiration logic */}
+            {currentUser.remainingDays} يوم
           </Text>
           <Text style={styles.boldText}>صالح حتى</Text>
+        </View>
+        <View style={styles.profileInfoEntry}>
+          <Text style={styles.unactiveText}>
+            {currentUser.uid.split("", 6)}
+          </Text>
+          <Text style={styles.boldText}>معرف الحساب</Text>
         </View>
       </View>
 
@@ -432,6 +438,6 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 16,
     elevation: 5,
-    marginBottom: 100,
+    marginBottom: 64,
   },
 });

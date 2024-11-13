@@ -13,14 +13,31 @@ import logo from "../../imgs/logo.png";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomModal from "../features/modal/CustomModal";
 import * as SecureStore from "expo-secure-store";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { auth, db } from "../firebase";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUser } from "../userSlice";
+import { signOut as firebaseSignOut } from "firebase/auth";
 
 export default function HomeScreen({ navigation }) {
   const [showChangelog, setShowChangelog] = useState(false);
+  const [lockAcc, setLockAcc] = useState(false);
   const [econmyTestReports, setEconmyTestReports] = useState([]);
   const [mangmentTestReports, setMangmentTestReports] = useState([]);
   const [studentCode, setStudentCode] = useState(""); // Store user input
   const [locationMessage, setLocationMessage] = useState(""); // Store location message
   const currentVersion = "0.3.0";
+
+  const currentUser = useSelector(selectUser);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log(currentUser.isLocked);
+
+    if (currentUser.isLocked) {
+      setLockAcc(true);
+    }
+  }, [currentUser]);
 
   useEffect(() => {
     // Fetch test results every time the screen is focused
@@ -68,6 +85,16 @@ export default function HomeScreen({ navigation }) {
     await AsyncStorage.setItem("lastVersion", currentVersion);
     setShowChangelog(false);
   };
+
+  function handleSignOut() {
+    firebaseSignOut(auth)
+      .then(() => {
+        dispatch(setUser(null));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
   const handleStudentLocation = () => {
     // Convert the student code to a number and determine the correct message
@@ -163,6 +190,40 @@ export default function HomeScreen({ navigation }) {
     setLocationMessage(message);
   };
 
+  useEffect(() => {
+    const updateRemainingDays = async () => {
+      if (!currentUser) return;
+
+      const userDocRef = doc(db, "users", currentUser.uid);
+      const userDocSnap = await getDoc(userDocRef);
+
+      if (userDocSnap.exists()) {
+        const userData = userDocSnap.data();
+        const remainingDays = userData.remainingDays;
+        const lastUpdated = userData.lastLoginDate;
+
+        const currentDate = new Date().toISOString().split("T")[0]; // Format as YYYY-MM-DD
+        const lastUpdatedDate = new Date(lastUpdated || currentDate);
+        const currentDateObj = new Date(currentDate);
+
+        const daysPassed = Math.floor(
+          (currentDateObj - lastUpdatedDate) / (1000 * 60 * 60 * 24)
+        );
+
+        if (daysPassed > 0) {
+          const newRemainingDays = Math.max(0, remainingDays - daysPassed);
+
+          await updateDoc(userDocRef, {
+            remainingDays: newRemainingDays,
+            lastLoginDate: currentDate,
+          });
+        }
+      }
+    };
+
+    updateRemainingDays();
+  }, [currentUser]);
+
   return (
     <ScrollView style={styles.container}>
       <CustomModal
@@ -172,13 +233,19 @@ export default function HomeScreen({ navigation }) {
         }
         onClose={handleCloseModal}
       />
+      <CustomModal
+        visible={lockAcc}
+        message={`تم تعليق حسابك ! \n\nبرجاء التواصل مع الفريق لإزالة التعليق وتجديد الاشتراك\n\n الرمز التعريفي: ${
+          currentUser.registrationCode
+        } \n\n معرف الحساب: ${currentUser.uid.slice(0, 6)}`}
+        onClose={handleSignOut}
+        accLock={true}
+      />
 
-      <View style={styles.news}>
+      {/* <View style={styles.news}>
         <Text style={styles.newsHeading}>ما الجديد؟</Text>
-        <Text style={styles.newsBody}>مراجعة اللغة الأجنبية</Text>
-        <Text style={styles.newsBody}>اسئلة على المحاضرات</Text>
         <Text style={styles.newsBody}>شامل محاسبة مالية</Text>
-      </View>
+      </View> */}
 
       {/* student test place */}
       <View style={[styles.news, { gap: 8 }]}>
