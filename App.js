@@ -29,12 +29,15 @@ import InfoScreen from "./src/app/screens/InfoScreen";
 import SupportScreen from "./src/app/screens/SupportScreen";
 import EconmyTestScreen from "./src/app/screens/lecturesTests/EconmyTestScreen";
 import MangmentTestScreen from "./src/app/screens/lecturesTests/MangmentTestScreen";
+import EconomyReportsScreen from "./src/app/screens/reports/EconomyReportsScreen";
+import MangmentReportsScreen from "./src/app/screens/reports/MangmentReportsScreen";
 
 SplashScreen.preventAutoHideAsync();
 
 const Tab = createBottomTabNavigator();
 const SettingsStack = createStackNavigator();
 const ReadStack = createStackNavigator();
+const HomeStack = createStackNavigator();
 
 function MainApp({ setIsLoading }) {
   const user = useSelector(selectUser);
@@ -144,6 +147,42 @@ function MainApp({ setIsLoading }) {
           }}
         />
       </SettingsStack.Navigator>
+    );
+  }
+
+  function HomeStackScreen() {
+    return (
+      <HomeStack.Navigator initialRouteName="HomeStack">
+        <HomeStack.Screen
+          name="HomeStack"
+          component={HomeScreen}
+          options={{ headerShown: false }} // No header for the main settings screen
+        />
+        <HomeStack.Screen
+          name="EconomyReports"
+          component={EconomyReportsScreen} // Another screen inside settings
+          options={{
+            title: "تقارير الاقتصاد",
+            headerTitleStyle: {
+              fontFamily: "Tajawal-Bold", // Apply the custom font
+              fontSize: 20, // Optional: adjust font size
+              color: "#000", // Optional: adjust text color
+            },
+          }}
+        />
+        <HomeStack.Screen
+          name="MangmentReports"
+          component={MangmentReportsScreen} // Another screen inside settings
+          options={{
+            title: "تقارير إدارة الأعمال",
+            headerTitleStyle: {
+              fontFamily: "Tajawal-Bold", // Apply the custom font
+              fontSize: 20, // Optional: adjust font size
+              color: "#000", // Optional: adjust text color
+            },
+          }}
+        />
+      </HomeStack.Navigator>
     );
   }
 
@@ -271,7 +310,7 @@ function MainApp({ setIsLoading }) {
       <Tab.Screen name="Settings" component={SettingsStackScreen} />
       <Tab.Screen name="Read" component={ReadStackScreen} />
       {/* Updated here */}
-      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Home" component={HomeStackScreen} />
     </Tab.Navigator>
   );
 }

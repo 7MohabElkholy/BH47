@@ -58,7 +58,7 @@ const TestReader = ({ testData, subjectKey }) => {
       wrongAnswers: testData.questions.length - correctCount,
     };
 
-    const message = `تم حفظ تقريرك! \n\n الإجابات الصحيحة ${correctCount}\nالإجابات الخاطئة ${result.wrongAnswers}\n\n يمكنك رؤية تقريقك في الشاشاة الرئيسية`;
+    const message = `تم حفظ تقريرك! \n\n الإجابات الصحيحة ${correctCount}\nالإجابات الخاطئة ${result.wrongAnswers}\n\n يمكنك رؤية تقريقك في الشاشة الرئيسية`;
 
     setModalMessage(message);
     setModalVisible(true); // Show the modal
