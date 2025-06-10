@@ -303,7 +303,7 @@ function MainApp({ setIsLoading }) {
           return <Ionicons name={iconName} size={30} color={color} />;
         },
         tabBarShowLabel: false,
-        tabBarActiveTintColor: "#327FE9",
+        tabBarActiveTintColor: "#990101",
         tabBarInactiveTintColor: "#000000",
       })}
     >

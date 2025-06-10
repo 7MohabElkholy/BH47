@@ -9,7 +9,7 @@ const InfoScreen = () => {
         <Image style={styles.logo} source={logo} resizeMode="contain" />
       </View>
       <Text style={styles.header}>
-        مرحبًا بك في <Text style={styles.bold}>إسكتش</Text>
+        مرحبًا بك في <Text style={styles.bold}>English مع شيبوب</Text>
       </Text>
 
       <View
@@ -23,7 +23,7 @@ const InfoScreen = () => {
           style={{
             width: "100%",
             height: 4,
-            backgroundColor: "#327FE9",
+            backgroundColor: "#990101",
             borderRadius: 8,
           }}
         />
@@ -31,19 +31,19 @@ const InfoScreen = () => {
 
       <View style={{ paddingHorizontal: 16 }}>
         <Text style={styles.bodyText}>
-          التطبيق الوحيد الشامل لجميع ما يقدمة المعهد من خدمات تعليمية
+          {/* التطبيق الوحيد الشامل لجميع ما يقدمة المعهد من خدمات تعليمية */}
         </Text>
       </View>
       <View style={{ paddingHorizontal: 16 }}>
         <Text style={styles.bodyText}>إصدار البرنامج: 0.3.0</Text>
-        <Text style={styles.bodyText}>القائمين على البرنامج:</Text>
+        {/* <Text style={styles.bodyText}>القائمين على البرنامج:</Text>
         <Text style={styles.bodyText}>
           مبرمج / مراجع تجربة المستخدم: مهاب الخولي
         </Text>
         <Text style={styles.bodyText}>
           قائد البرنامج / مصمم أول: أسماء الزناتي
         </Text>
-        <Text style={styles.bodyText}>تسويق : فتحي نصار</Text>
+        <Text style={styles.bodyText}>تسويق : فتحي نصار</Text> */}
       </View>
     </View>
   );
@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
   logo: {
     width: 325,
     height: 128,
+    marginBottom: 16,
     // backgroundColor: "red",
   },
 
@@ -72,11 +73,12 @@ const styles = StyleSheet.create({
 
   bold: {
     fontFamily: "Tajawal-Bold",
-    color: "#327FE9",
+    color: "#990101",
   },
 
   bodyText: {
     fontFamily: "Tajawal-Medium",
     fontSize: 18,
+    textAlign: "right",
   },
 });

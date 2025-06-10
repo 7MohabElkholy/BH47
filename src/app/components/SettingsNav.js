@@ -33,7 +33,7 @@ const SettingsNav = (props) => {
       }}
       onPress={() => navigation.navigate(props.nav)} // Navigate to the provided route
     >
-      <Ionicons name={props.icon} size={48} color="#327FE9" />
+      <Ionicons name={props.icon} size={48} color="#990101" />
       <Text
         style={{
           fontSize: 18, // Text size

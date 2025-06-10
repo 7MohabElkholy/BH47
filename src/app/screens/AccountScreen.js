@@ -434,7 +434,7 @@ const styles = StyleSheet.create({
 
   logout: {
     width: "100%",
-    backgroundColor: "#327FE9",
+    backgroundColor: "#990101",
     padding: 8,
     borderRadius: 16,
     elevation: 5,

@@ -275,6 +275,6 @@ const styles = StyleSheet.create({
   showMoreTxt: {
     fontFamily: "Tajawal-Bold",
     fontSize: 16,
-    color: "#327FE9",
+    color: "#990101",
   },
 });

@@ -13,7 +13,8 @@ import {
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Intro from "../features/intro/Intro";
-import bg from "../../imgs/bg.jpg";
+// import bg from "../../imgs/bg.jpg";
+import logo from "../../imgs/logo.png";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -35,6 +36,8 @@ const LoginScreen = () => {
   const [isLoading, setIsLoading] = useState(false); // Loading state
   const [isSignUp, setIsSignUp] = useState(true); // State to toggle between sign-up and login
 
+  const screenWidth = Dimensions.get("window").width;
+
   useEffect(() => {
     Animated.timing(fadeAnim, {
       toValue: 1,
@@ -44,9 +47,9 @@ const LoginScreen = () => {
     }).start();
   }, [fadeAnim]);
 
-  if (!isIntroSkipped) {
-    return <Intro />;
-  }
+  // if (!isIntroSkipped) {
+  //   return <Intro />;
+  // }
 
   const handleAuth = async () => {
     setErrorMessage(""); // Clear previous error messages
@@ -125,11 +128,19 @@ const LoginScreen = () => {
   return (
     <View style={styles.container}>
       <Image
-        source={bg}
-        style={[styles.bg, { height: height + 50 }]}
-        resizeMode="stretch"
-      />
+        source={logo}
+        style={{
+          width: "50%",
+          aspectRatio: 337 / 168,
+          resizeMode: "contain",
+          position: "absolute",
+          top: 0,
+          // marginBottom: 100,
+        }}
+        // style={[styles.bg, { height: height + 50 }]}
 
+        // resizeMode="stretch"
+      />
       <Animated.View style={[styles.animatedContent, { opacity: fadeAnim }]}>
         <Text style={styles.header}>
           {isSignUp ? "إنشاء حساب" : "تسجيل الدخول"}
@@ -140,7 +151,7 @@ const LoginScreen = () => {
             keyboardType="email-address"
             style={styles.input}
             placeholder="البريد الإلكتروني"
-            placeholderTextColor="#ffffffaa"
+            placeholderTextColor="#333333aa"
             onChangeText={setEmail}
             value={email}
             autoCapitalize="none"
@@ -149,7 +160,7 @@ const LoginScreen = () => {
             keyboardType="visible-password"
             style={styles.input}
             placeholder="كلمة المرور"
-            placeholderTextColor="#ffffffaa"
+            placeholderTextColor="#333333aa"
             onChangeText={setPassword}
             value={password}
             autoCapitalize="none"
@@ -158,7 +169,7 @@ const LoginScreen = () => {
             <TextInput
               style={styles.input}
               placeholder="الرمز التعريفي"
-              placeholderTextColor="#ffffffaa"
+              placeholderTextColor="#333333aa"
               onChangeText={setRegistrationCode}
               value={registrationCode}
               autoCapitalize="none"
@@ -205,11 +216,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#327FE9",
-  },
-  bg: {
-    width: "100%",
-    position: "absolute",
+    // backgroundColor: "#327FE9",
   },
   animatedContent: {
     alignItems: "center",
@@ -227,16 +234,16 @@ const styles = StyleSheet.create({
   header: {
     fontFamily: "Tajawal-Bold",
     fontSize: 32,
-    color: "#FFFFFF",
+    color: "#990101",
     textAlign: "center",
   },
   input: {
     fontFamily: "Tajawal-Regular",
     textAlign: "right",
     fontSize: 18,
-    color: "#fff",
+    color: "#333333",
     width: "100%",
-    borderColor: "#fff",
+    borderColor: "#333333",
     borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 16,
@@ -256,7 +263,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   btn: {
-    backgroundColor: "#327FE9",
+    backgroundColor: "#990101",
     paddingVertical: 8,
     borderRadius: 16,
     display: "flex",
@@ -266,11 +273,12 @@ const styles = StyleSheet.create({
   underText: {
     fontFamily: "Tajawal-Regular",
     fontSize: 16,
-    color: "#FFFFFF",
+    color: "#333333",
     textAlign: "center",
   },
   highlight: {
     fontFamily: "Tajawal-Bold",
+    color: "#990101",
   },
   errorText: {
     fontFamily: "Tajawal-Regular",

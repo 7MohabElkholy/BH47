@@ -1,10 +1,16 @@
 import React from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 
 const ReadScreen = ({ navigation }) => {
   // Accept navigation prop
   return (
-    <View style={styles.main}>
+    <ScrollView style={styles.main}>
       <View style={styles.heading}>
         <Text style={styles.h1}>الملخصات</Text>
         <View style={styles.hr} />
@@ -94,7 +100,13 @@ const ReadScreen = ({ navigation }) => {
           <Text style={styles.btnText}>إدارة اعمال</Text>
         </TouchableOpacity>
       </View>
-    </View>
+
+      {/* videos */}
+      <View style={styles.heading}>
+        <Text style={[styles.h1, { marginTop: 32 }]}>فيديوهات المحاضرات</Text>
+        <View style={styles.hr} />
+      </View>
+    </ScrollView>
   );
 };
 
